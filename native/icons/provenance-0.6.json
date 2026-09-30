@@ -1,0 +1,160 @@
+[
+  {
+    "id": "biorxiv",
+    "origin": "https://www.biorxiv.org",
+    "icon": "https://www.biorxiv.org/favicon.ico",
+    "bytes": 894
+  },
+  {
+    "id": "medrxiv",
+    "origin": "https://www.medrxiv.org",
+    "icon": "https://www.medrxiv.org/sites/default/files/images/favicon.ico",
+    "bytes": 4286
+  },
+  {
+    "id": "arxiv",
+    "origin": "https://arxiv.org",
+    "icon": "https://arxiv.org/static/browse/0.3.4/images/icons/favicon-16x16.png",
+    "bytes": 1052
+  },
+  {
+    "id": "figshare",
+    "origin": "https://figshare.com",
+    "status": "fallback label"
+  },
+  {
+    "id": "hf",
+    "origin": "https://huggingface.co",
+    "icon": "https://huggingface.co/favicon.ico",
+    "bytes": 205556
+  },
+  {
+    "id": "modelscope",
+    "origin": "https://modelscope.cn",
+    "icon": "https://g.alicdn.com/sail-web/maas/2.13.161/favicon/128.ico",
+    "bytes": 67646
+  },
+  {
+    "id": "dataverse",
+    "origin": "https://dataverse.harvard.edu",
+    "status": "fallback label"
+  },
+  {
+    "id": "dryad",
+    "origin": "https://datadryad.org",
+    "icon": "https://datadryad.org/assets/favicon-16x16-e13d5ee1bfe86ea9fc6028256195387d0f917ead55b2d7bfa58ab608d3ba3216.png",
+    "bytes": 486
+  },
+  {
+    "id": "uniprot",
+    "origin": "https://www.uniprot.org",
+    "icon": "https://www.uniprot.org/favicon-16x16.png",
+    "bytes": 992
+  },
+  {
+    "id": "ena",
+    "origin": "https://www.ebi.ac.uk",
+    "icon": "https://ebi.emblstatic.net/web_guidelines/EBI-Framework/v1.4/images/logos/EMBL-EBI/favicons/apple-icon-57x57.png",
+    "bytes": 2872
+  },
+  {
+    "id": "pdb",
+    "origin": "https://www.rcsb.org",
+    "icon": "https://www.rcsb.org/img/rcsb-apple-touch-icon.jpg",
+    "bytes": 8236
+  },
+  {
+    "id": "github",
+    "origin": "https://github.com",
+    "icon": "https://github.githubassets.com/favicons/favicon.png",
+    "bytes": 958
+  },
+  {
+    "id": "hepdata",
+    "origin": "https://www.hepdata.net",
+    "icon": "https://www.hepdata.net/static/apple-touch-icon-180.png",
+    "bytes": 25366
+  },
+  {
+    "id": "nasa",
+    "origin": "https://www.earthdata.nasa.gov",
+    "icon": "https://www.earthdata.nasa.gov/themes/custom/project/hds_earthdata/favicon.ico",
+    "bytes": 4286
+  },
+  {
+    "id": "openreview",
+    "origin": "https://openreview.net",
+    "status": "fallback label"
+  },
+  {
+    "id": "noaa",
+    "origin": "https://www.noaa.gov",
+    "icon": "https://www.noaa.gov/themes/custom/noaa_guswds/favicon.ico",
+    "bytes": 4286
+  },
+  {
+    "id": "ieee",
+    "origin": "https://ieeexplore.ieee.org",
+    "status": "fallback label"
+  },
+  {
+    "id": "kaggle",
+    "origin": "https://www.kaggle.com",
+    "status": "fallback label"
+  },
+  {
+    "id": "acm",
+    "origin": "https://dl.acm.org",
+    "status": "fallback label"
+  },
+  {
+    "id": "copernicus",
+    "origin": "https://climate.copernicus.eu",
+    "icon": "https://climate.copernicus.eu/themes/custom/copernicus/favicon.ico",
+    "bytes": 15086
+  },
+  {
+    "id": "wiley",
+    "origin": "https://onlinelibrary.wiley.com",
+    "status": "fallback label"
+  },
+  {
+    "id": "elsevier",
+    "origin": "https://www.sciencedirect.com",
+    "status": "fallback label"
+  },
+  {
+    "id": "cnki",
+    "origin": "https://www.cnki.net",
+    "icon": "https://www.cnki.net/favicon.ico",
+    "bytes": 1150
+  },
+  {
+    "id": "wanfang",
+    "origin": "https://www.wanfangdata.com.cn",
+    "icon": "https://cdn.w.wanfangdata.com.cn/favicon.ico",
+    "bytes": 9662
+  },
+  {
+    "id": "cqvip",
+    "origin": "https://www.cqvip.com",
+    "icon": "https://www.cqvip.com/favicon.ico",
+    "bytes": 16958
+  },
+  {
+    "id": "alphafold",
+    "origin": "https://alphafold.ebi.ac.uk",
+    "status": "fallback label"
+  },
+  {
+    "id": "springer",
+    "origin": "https://link.springer.com",
+    "status": "fallback label"
+  },
+  {
+    "id": "osf",
+    "origin": "https://osf.io",
+    "icon": "https://osf.io/favicon.ico",
+    "bytes": 15406
+  }
+]

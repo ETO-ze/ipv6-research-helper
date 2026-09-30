@@ -1,0 +1,62 @@
+[
+  {
+    "id": "githubraw",
+    "website": "https://github.com",
+    "icon": "https://github.com/fluidicon.png",
+    "exit": 0
+  },
+  {
+    "id": "pmc",
+    "website": "https://pmc.ncbi.nlm.nih.gov",
+    "icon": "https://cdn.ncbi.nlm.nih.gov/pmc/pd-medc-pmc-cloudpmc-viewer/production/9b1d9d87/var/data/static/img/favicons/apple-touch-icon.png",
+    "exit": 0
+  },
+  {
+    "id": "epic",
+    "website": "Installed Epic Games Launcher application icon",
+    "icon": "C:\\Program Files\\Epic Games\\Launcher\\Portal\\Binaries\\Win64\\EpicGamesLauncher.exe",
+    "exit": 0
+  },
+  {
+    "id": "gitlab",
+    "website": "https://about.gitlab.com",
+    "icon": "https://about.gitlab.com/images/ico/favicon-192x192.png",
+    "exit": 0
+  },
+  {
+    "id": "condaforge",
+    "website": "https://conda-forge.org",
+    "icon": "https://conda-forge.org/img/favicon.ico",
+    "exit": 0
+  },
+  {
+    "id": "zenodo",
+    "website": "https://zenodo.org",
+    "icon": "https://zenodo.org/static/favicon.ico",
+    "exit": 0
+  },
+  {
+    "id": "ncbi",
+    "website": "https://www.ncbi.nlm.nih.gov",
+    "icon": "https://www.ncbi.nlm.nih.gov/favicon.ico",
+    "exit": 0
+  },
+  {
+    "id": "cern",
+    "website": "https://opendata.cern.ch",
+    "icon": "https://opendata.cern.ch/static/favicon.ico",
+    "exit": 0
+  },
+  {
+    "id": "pypi",
+    "website": "https://pypi.org",
+    "icon": "https://pypi.org/static/images/favicon.35549fe8.ico",
+    "exit": 0
+  },
+  {
+    "id": "conda",
+    "website": "https://www.anaconda.com",
+    "icon": "https://www.anaconda.com/wp-content/uploads/2025/05/cropped-favicon-32x32.png",
+    "exit": 0
+  }
+]

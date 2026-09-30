@@ -1,0 +1,445 @@
+[
+  {
+    "id": "zenodo",
+    "name": "Zenodo",
+    "category": "研究数据",
+    "hosts": [
+      "zenodo.org"
+    ],
+    "sample": "https://zenodo.org/records/6834336/files/How-to-upload-and-download-from-Zenodo.pdf",
+    "kind": "pdf",
+    "note": "记录文件与附件；按实际文件链接下载"
+  },
+  {
+    "id": "ncbi",
+    "name": "NCBI",
+    "category": "生物数据",
+    "hosts": [
+      "ftp.ncbi.nlm.nih.gov",
+      "ftp.ncbi.nih.gov",
+      "api.ncbi.nlm.nih.gov"
+    ],
+    "sample": "https://ftp.ncbi.nlm.nih.gov/genomes/README.txt",
+    "kind": "text",
+    "note": "HTTPS 下载服务器；样本为说明文件，SRA Toolkit 与云存储另测"
+  },
+  {
+    "id": "pypi",
+    "name": "PyPI",
+    "category": "科研软件",
+    "hosts": [
+      "pypi.org",
+      "files.pythonhosted.org"
+    ],
+    "sample": "https://files.pythonhosted.org/packages/b7/ce/149a00dd41f10bc29e5921b496af8b574d8413afcd5e30dfa0ed46c2cc5e/six-1.17.0-py2.py3-none-any.whl",
+    "kind": "zip",
+    "sha256": "4721f391ed90541fddacab5acf947aa0d3dc7d27b2e1e8eda2be8970586c3274",
+    "note": "pip 可通过本地 HTTP 代理接入；样本带官方 SHA256"
+  },
+  {
+    "id": "conda",
+    "name": "Conda main",
+    "category": "科研软件",
+    "hosts": [
+      "repo.anaconda.com"
+    ],
+    "sample": "https://repo.anaconda.com/pkgs/main/win-64/repodata.json.bz2",
+    "kind": "bz2",
+    "note": "样本为索引分片；支持 HTTPS 包地址"
+  },
+  {
+    "id": "condaforge",
+    "name": "conda-forge",
+    "category": "科研软件",
+    "hosts": [
+      "conda.anaconda.org"
+    ],
+    "sample": "https://conda.anaconda.org/conda-forge/win-64/repodata.json.zst",
+    "kind": "zstd",
+    "note": "样本为索引分片；支持 HTTPS 包地址"
+  },
+  {
+    "id": "githubraw",
+    "name": "GitHub Raw",
+    "category": "研究代码",
+    "hosts": [
+      "raw.githubusercontent.com"
+    ],
+    "sample": "https://raw.githubusercontent.com/python/cpython/main/README.rst",
+    "kind": "text",
+    "note": "仅 Raw 原始文件；Release 和源码 ZIP 分开检测"
+  },
+  {
+    "id": "arxiv",
+    "name": "arXiv",
+    "category": "开放论文",
+    "hosts": [
+      "arxiv.org",
+      "export.arxiv.org"
+    ],
+    "sample": "https://arxiv.org/pdf/1706.03762",
+    "kind": "pdf",
+    "note": "使用已实测的 Fastly IPv6 入口，保留 arXiv 域名和 TLS 校验；样本为 PDF 片段，不自动遍历论文库"
+  },
+  {
+    "id": "openreview",
+    "name": "OpenReview",
+    "category": "开放论文",
+    "hosts": [
+      "openreview.net",
+      "api.openreview.net",
+      "api2.openreview.net"
+    ],
+    "sample": "https://openreview.net/pdf?id=VtmBAGCN7o",
+    "kind": "pdf",
+    "note": "按论文 PDF 链接下载"
+  },
+  {
+    "id": "pmc",
+    "name": "PMC",
+    "category": "开放论文",
+    "hosts": [
+      "pmc.ncbi.nlm.nih.gov",
+      "www.ncbi.nlm.nih.gov",
+      "cdn.ncbi.nlm.nih.gov",
+      "pmc-oa-opendata.s3.amazonaws.com",
+      "pmc-oa-opendata.s3.us-east-1.amazonaws.com",
+      "pmc-oa-opendata.s3.dualstack.us-east-1.amazonaws.com"
+    ],
+    "note": "开放论文 PDF 与附件；无签名的官方云对象链接自动使用同一存储桶的官方 S3 IPv6 双栈端点",
+    "sample": "https://pmc-oa-opendata.s3.amazonaws.com/PMC10009416.1/PMC10009416.1.pdf",
+    "kind": "pdf"
+  },
+  {
+    "id": "biorxiv",
+    "name": "bioRxiv",
+    "category": "开放论文",
+    "hosts": [
+      "www.biorxiv.org"
+    ],
+    "note": "公开论文 PDF 样本；网站访问验证仍可能阻止下载",
+    "sample": "https://www.biorxiv.org/content/10.1101/2024.01.18.576291v1.full.pdf",
+    "kind": "pdf"
+  },
+  {
+    "id": "medrxiv",
+    "name": "medRxiv",
+    "category": "开放论文",
+    "hosts": [
+      "www.medrxiv.org"
+    ],
+    "note": "公开论文 PDF 样本，仅验证下载链路；网站访问验证仍可能阻止下载",
+    "sample": "https://www.medrxiv.org/content/10.1101/2020.12.18.20248511v1.full.pdf",
+    "kind": "pdf"
+  },
+  {
+    "id": "figshare",
+    "name": "Figshare",
+    "category": "研究数据",
+    "hosts": [
+      "figshare.com",
+      "api.figshare.com",
+      "ndownloader.figshare.com",
+      "s3-eu-west-1.amazonaws.com"
+    ],
+    "note": "官方 API 教程引用的文件；网站访问验证或对象存储跳转仍可能失败",
+    "sample": "https://figshare.com/ndownloader/files/9778696",
+    "kind": "file"
+  },
+  {
+    "id": "osf",
+    "name": "OSF",
+    "category": "研究数据",
+    "hosts": [
+      "osf.io",
+      "files.osf.io",
+      "api.osf.io"
+    ],
+    "note": "公开文件下载，存储重定向逐域名验证"
+  },
+  {
+    "id": "dataverse",
+    "name": "Harvard Dataverse",
+    "category": "研究数据",
+    "hosts": [
+      "dataverse.harvard.edu"
+    ],
+    "note": "下载 API 与文件地址；受限记录需既有授权"
+  },
+  {
+    "id": "dryad",
+    "name": "Dryad",
+    "category": "研究数据",
+    "hosts": [
+      "datadryad.org",
+      "www.datadryad.org"
+    ],
+    "note": "按公开记录文件链接下载"
+  },
+  {
+    "id": "hf",
+    "name": "Hugging Face",
+    "category": "模型与数据集",
+    "hosts": [
+      "huggingface.co",
+      "cdn-lfs.huggingface.co",
+      "cdn-lfs-us-1.huggingface.co",
+      "cdn-lfs-eu-1.huggingface.co",
+      "cas-bridge.xethub.hf.co",
+      "cas-server.xethub.hf.co",
+      "transfer.xethub.hf.co"
+    ],
+    "sample": "https://huggingface.co/gpt2/resolve/main/config.json",
+    "kind": "json",
+    "note": "检测配置样本不代表权重通过；Xet 节点分别诊断，不提供 IPv4 回退"
+  },
+  {
+    "id": "modelscope",
+    "name": "ModelScope",
+    "category": "模型与数据集",
+    "hosts": [
+      "modelscope.cn",
+      "www.modelscope.cn",
+      "cdn-lfs-cn-1.modelscope.cn",
+      "cdn-lfs-cn-2.modelscope.cn"
+    ],
+    "note": "Qwen 模型配置样本，不代表权重通过；实际权重 CDN 需逐文件验证",
+    "sample": "https://modelscope.cn/api/v1/models/Qwen/Qwen2.5-0.5B/repo?Revision=master&FilePath=config.json",
+    "kind": "json"
+  },
+  {
+    "id": "kaggle",
+    "name": "Kaggle",
+    "category": "模型与数据集",
+    "hosts": [
+      "www.kaggle.com",
+      "kaggle.com",
+      "storage.googleapis.com"
+    ],
+    "note": "使用已有权限的下载链接；签名 URL 过期需更新"
+  },
+  {
+    "id": "ena",
+    "name": "EMBL-EBI / ENA",
+    "category": "生物数据",
+    "hosts": [
+      "ftp.ebi.ac.uk",
+      "ftp.sra.ebi.ac.uk",
+      "www.ebi.ac.uk"
+    ],
+    "sample": "https://ftp.sra.ebi.ac.uk/vol1/fastq/ERR609/001/ERR6090701/ERR6090701_1.fastq.gz",
+    "kind": "gzip",
+    "note": "FASTQ 等 HTTP(S) 下载；不支持 FTP / Aspera 协议"
+  },
+  {
+    "id": "uniprot",
+    "name": "UniProt",
+    "category": "生物数据",
+    "hosts": [
+      "ftp.uniprot.org",
+      "rest.uniprot.org",
+      "www.uniprot.org"
+    ],
+    "sample": "https://rest.uniprot.org/uniprotkb/P69905.fasta",
+    "kind": "fasta",
+    "note": "蛋白序列与下载文件"
+  },
+  {
+    "id": "pdb",
+    "name": "RCSB PDB",
+    "category": "生物数据",
+    "hosts": [
+      "files.rcsb.org",
+      "files.wwpdb.org",
+      "models.rcsb.org"
+    ],
+    "sample": "https://files.rcsb.org/download/1CRN.cif",
+    "kind": "text",
+    "note": "结构文件 CIF / PDB"
+  },
+  {
+    "id": "alphafold",
+    "name": "AlphaFold DB",
+    "category": "生物数据",
+    "hosts": [
+      "alphafold.ebi.ac.uk"
+    ],
+    "note": "实际模型文件链接和当前模型版本需检测"
+  },
+  {
+    "id": "github",
+    "name": "GitHub 归档 / Release",
+    "category": "研究代码",
+    "hosts": [
+      "github.com",
+      "codeload.github.com",
+      "release-assets.githubusercontent.com",
+      "objects.githubusercontent.com"
+    ],
+    "note": "与 Raw 分开；重定向后仍强制 IPv6"
+  },
+  {
+    "id": "gitlab",
+    "name": "GitLab.com",
+    "category": "研究代码",
+    "hosts": [
+      "gitlab.com"
+    ],
+    "note": "公开 HTTPS 原始文件或归档；不代表所有自建 GitLab 实例",
+    "sample": "https://gitlab.com/gitlab-org/gitlab/-/raw/master/README.md",
+    "kind": "text"
+  },
+  {
+    "id": "cern",
+    "name": "CERN Open Data",
+    "category": "物理数据",
+    "hosts": [
+      "opendata.cern.ch",
+      "eospublic.cern.ch",
+      "eospublichttp.cern.ch"
+    ],
+    "note": "HTTP(S) 数据文件；不接管 XRootD 协议",
+    "sample": "https://opendata.cern.ch/record/5500/files/mass4l_combine.pdf",
+    "kind": "pdf"
+  },
+  {
+    "id": "hepdata",
+    "name": "HEPData",
+    "category": "物理数据",
+    "hosts": [
+      "www.hepdata.net",
+      "hepdata.net"
+    ],
+    "sample": "https://www.hepdata.net/download/submission/ins1419244/1/yaml",
+    "kind": "gzip",
+    "note": "HEPData YAML 导出；访问验证会如实报错"
+  },
+  {
+    "id": "nasa",
+    "name": "NASA Earthdata",
+    "category": "地球与气候",
+    "hosts": [
+      "data.lpdaac.earthdatacloud.nasa.gov",
+      "data.asdc.earthdata.nasa.gov",
+      "urs.earthdata.nasa.gov",
+      "cmr.earthdata.nasa.gov"
+    ],
+    "note": "需产品的 HTTPS 文件链接与有效授权；未实现网页登录接管"
+  },
+  {
+    "id": "noaa",
+    "name": "NOAA",
+    "category": "地球与气候",
+    "hosts": [
+      "www.ncei.noaa.gov",
+      "downloads.psl.noaa.gov",
+      "psl.noaa.gov",
+      "noaa-goes16.s3.amazonaws.com",
+      "noaa-goes16.s3.dualstack.us-east-1.amazonaws.com"
+    ],
+    "note": "样本为官方 GOES 说明 PDF；PSL 与其他产品域名单独诊断。匿名 GOES-16 云文件可使用官方双栈入口；签名地址不改写",
+    "sample": "https://noaa-goes16.s3.dualstack.us-east-1.amazonaws.com/Beginners_Guide_to_GOES-R_Series_Data.pdf",
+    "kind": "pdf"
+  },
+  {
+    "id": "copernicus",
+    "name": "Copernicus / ECMWF",
+    "category": "地球与气候",
+    "hosts": [
+      "cds.climate.copernicus.eu",
+      "data.ecmwf.int",
+      "object-store.os-api.cci2.ecmwf.int"
+    ],
+    "note": "下载生成后的文件链接；不实现数据订购 API 或账户登录"
+  },
+  {
+    "id": "ieee",
+    "name": "IEEE Xplore",
+    "category": "论文出版平台",
+    "hosts": [
+      "ieeexplore.ieee.org",
+      "ieeexploreapi.ieee.org"
+    ],
+    "note": "官方公开作者稿 PDF 样本；订阅论文仍需已有权限，机构认证可能绑定网络出口",
+    "sample": "https://ieeexplore.ieee.org/ielaam/6287639/8948470/9165719-aam.pdf",
+    "kind": "pdf"
+  },
+  {
+    "id": "acm",
+    "name": "ACM Digital Library",
+    "category": "论文出版平台",
+    "hosts": [
+      "dl.acm.org"
+    ],
+    "note": "需实际 PDF 链接；保留原有访问权限要求"
+  },
+  {
+    "id": "springer",
+    "name": "Springer Nature",
+    "category": "论文出版平台",
+    "hosts": [
+      "link.springer.com",
+      "link.springernature.com",
+      "www.nature.com",
+      "media.springernature.com",
+      "static-content.springer-cdn.com"
+    ],
+    "note": "PDF 与补充材料；登录页面不会保存成论文文件"
+  },
+  {
+    "id": "elsevier",
+    "name": "ScienceDirect",
+    "category": "论文出版平台",
+    "hosts": [
+      "www.sciencedirect.com",
+      "pdf.sciencedirectassets.com",
+      "ars.els-cdn.com"
+    ],
+    "note": "需实际 PDF 或附件链接；机构认证链路待用户授权样本验证"
+  },
+  {
+    "id": "wiley",
+    "name": "Wiley",
+    "category": "论文出版平台",
+    "hosts": [
+      "onlinelibrary.wiley.com"
+    ],
+    "note": "官方列出的开放论文 PDF 样本；访问验证仍可能阻止，订阅内容仍需已有权限",
+    "sample": "https://onlinelibrary.wiley.com/doi/pdf/10.1111/padm.12397",
+    "kind": "pdf"
+  },
+  {
+    "id": "cnki",
+    "name": "中国知网",
+    "category": "中文学术",
+    "hosts": [
+      "www.cnki.net",
+      "kns.cnki.net",
+      "pdf.cnki.net",
+      "download.cnki.net"
+    ],
+    "note": "需实际 PDF / CAJ 链接和学校授权；未实现网页登录接管"
+  },
+  {
+    "id": "wanfang",
+    "name": "万方数据",
+    "category": "中文学术",
+    "hosts": [
+      "www.wanfangdata.com.cn",
+      "s.wanfangdata.com.cn",
+      "download.wanfangdata.com.cn"
+    ],
+    "note": "需实际文件链接和授权；未实现网页登录接管"
+  },
+  {
+    "id": "cqvip",
+    "name": "维普",
+    "category": "中文学术",
+    "hosts": [
+      "www.cqvip.com",
+      "qikan.cqvip.com",
+      "download.cqvip.com"
+    ],
+    "note": "需实际文件链接和授权；未实现网页登录接管"
+  }
+]

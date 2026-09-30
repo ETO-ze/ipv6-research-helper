@@ -1,0 +1,44 @@
+{
+  "version": "0.7.0",
+  "started": "2026-09-30T17:43:32+08:00",
+  "finished": "2026-09-30T17:43:43+08:00",
+  "passed": true,
+  "scope": "本次真实 UE 数据块与助手上游测试；不证明此前整套 UE 下载、其他进程或路由器之后的承载协议。",
+  "checks": [
+    {
+      "name": "Clash 下载规则完整",
+      "passed": true,
+      "detail": "16 个下载域名规则生效，规则模式正确"
+    },
+    {
+      "name": "UE 数据块 HTTP → Akamai IPv6",
+      "passed": true,
+      "detail": "HTTP 200；270305 字节；SHA256、解压大小及清单 SHA1 全部匹配"
+    },
+    {
+      "name": "UE 数据块 HTTPS → CloudFront IPv6",
+      "passed": true,
+      "detail": "HTTP 200；270305 字节；SHA256、解压大小及清单 SHA1 全部匹配"
+    },
+    {
+      "name": "拒绝非授权目标 http://not-an-epic-host.invalid/",
+      "passed": true,
+      "detail": "403 拒绝，未创建外网上游"
+    },
+    {
+      "name": "拒绝非授权目标 http://1.1.1.1/",
+      "passed": true,
+      "detail": "403 拒绝，未创建外网上游"
+    },
+    {
+      "name": "系统 TCP 出站采样",
+      "passed": true,
+      "detail": "10 秒窗口：IPv6 远端 2 个，IPv4 远端 0 个；快照可能漏过短连接"
+    },
+    {
+      "name": "真实 IPv6 上游建立",
+      "passed": true,
+      "detail": "新建 IPv6 上游 4 条；下载和 DNS 均使用 tcp6，无 IPv4 回退"
+    }
+  ]
+}
