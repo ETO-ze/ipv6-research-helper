@@ -148,7 +148,7 @@ func TestAllCatalogSourcesHaveRoutePlans(t *testing.T) {
 		}
 		seen[p.ID] = true
 	}
-	if len(seen) != len(researchSources)+1 {
+	if len(seen) != len(researchSources)+2 {
 		t.Fatal(len(seen))
 	}
 	for _, s := range researchSources {

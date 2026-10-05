@@ -1,0 +1,170 @@
+{
+  "schemaVersion": 1,
+  "observedDate": "2026-10-05",
+  "timezone": "Asia/Shanghai",
+  "testedBuild": {
+    "version": "0.8.0",
+    "wpfFileVersion": "0.8.0.0",
+    "executableSha256": "9DDD27EDE94DCAE4F8A060CED80D2395C156199D13CC6CFC47DDC50B20C3F439",
+    "executableBytes": 9227776,
+    "embeddedEngineResourceSha256": "AD453A001425318FC2657087BAD40A1D852D6AB115250EBD8D64FD14F608542B",
+    "runtimeIdentityEvidence": "本机原生窗口进程与引擎父子链已核对，停止时立即关闭6条活动Steam转发连接的行为已核对",
+    "engineHashMeaning": "记录的是最终EXE内嵌引擎资源哈希，不声称磁盘读取的提取文件哈希可以证明运行引擎身份"
+  },
+  "cleanSourceTests": {
+    "topLevelPassed": 67,
+    "passedIncludingSubtests": 115,
+    "steamTopLevelPassed": 21,
+    "failed": 0,
+    "skipped": 2,
+    "skippedTests": [
+      {"name": "TestLiveResearchRaw", "reason": "显式公网开关未开启"},
+      {"name": "TestRealUEChunkIntegrity", "reason": "公开源码不分发第三方UE版权内容块fixture"}
+    ],
+    "goVetPassed": true,
+    "command": "go test -json -count=1 ./...",
+    "countMeaning": "含子测试总数已经包含顶层测试，不重复相加"
+  },
+  "adminActivation": {
+    "administrator": true,
+    "managedExactDomainCount": 25,
+    "ipv4Loopback": "127.0.0.23",
+    "ipv6Loopback": "::1",
+    "ports": [80, 443],
+    "clashRequired": false,
+    "downloadRegionChanged": false,
+    "credentialsChanged": false
+  },
+  "chainVerification": {
+    "version": "0.8.0",
+    "started": "2026-10-05T22:30:49+08:00",
+    "finished": "2026-10-05T22:30:50+08:00",
+    "passed": true,
+    "checks": [
+      {
+        "name": "官方 SteamCache HTTPS / cache7-hkg1.steamcontent.com",
+        "passed": true,
+        "detail": "745040 字节，真实内容块头和传输参照 SHA256 一致，TLS 正常校验"
+      },
+      {
+        "name": "官方 SteamCache HTTPS / cache8-hkg1.steamcontent.com",
+        "passed": true,
+        "detail": "745040 字节，真实内容块头和传输参照 SHA256 一致，TLS 正常校验"
+      },
+      {
+        "name": "Steam 本地 IPv6 TLS 监听",
+        "passed": true,
+        "detail": "仅监听 ::1:80/443，与 127.0.0.23 双栈回环配合"
+      },
+      {
+        "name": "Steam 本地 TLS 原样转发",
+        "passed": true,
+        "detail": "::1 → 助手 → 官方缓存 IPv6，原域名、证书和内容块校验通过；不证明 Steam 客户端已经使用此路径"
+      },
+      {
+        "name": "Steam 已应用 hosts 核验",
+        "passed": true,
+        "detail": "本程序管理的精确域名块仍完整，其他规则未覆盖"
+      },
+      {
+        "name": "未知或 IPv4 目标拒绝 http://not-steam.example/chunk",
+        "passed": true,
+        "detail": "403，未创建外网上游"
+      },
+      {
+        "name": "未知或 IPv4 目标拒绝 http://1.1.1.1/chunk",
+        "passed": true,
+        "detail": "403，未创建外网上游"
+      },
+      {
+        "name": "真实 IPv6 上游",
+        "passed": true,
+        "detail": "本次新建 4 条 IPv6 连接；下载和 DNS 使用 tcp6，无 IPv4 回退"
+      }
+    ],
+    "referenceHashKind": "六个官方缓存独立IPv6传输参照，非Valve发布者校验值或数字签名",
+    "finalGameFileDecrypted": false
+  },
+  "clientSampling": {
+    "started": "2026-10-05T22:33:39.7751505+08:00",
+    "finished": "2026-10-05T22:34:05.2272442+08:00",
+    "durationSeconds": 25.4520937,
+    "sampleCount": 22,
+    "steamToIpv6Loopback443Observations": 120,
+    "matchingHelperReverseFourTupleObservations": 120,
+    "helperPublicIpv6ConnectionObservations": 120,
+    "helperPublicIpv4ConnectionObservations": 0,
+    "countMeaning": "连接计数为多次快照的观测次数，不等于唯一连接数，短连接可能未被捕获",
+    "nativeSteamBytesDelta": 250120379,
+    "totalHelperDownloadDeltaBytes": 250124764,
+    "counterMeaning": "六个内容流增量与助手总计增量口径不同，不相加",
+    "nativeHosts": [
+      "cache7-hkg1.steamcontent.com",
+      "cache8-hkg1.steamcontent.com",
+      "cache9-hkg1.steamcontent.com",
+      "cache10-hkg1.steamcontent.com",
+      "cache11-hkg1.steamcontent.com",
+      "cache12-hkg1.steamcontent.com"
+    ],
+    "actualClientPathObserved": true,
+    "steamLogEvidence": {
+      "time": "2026-10-05T22:33:42+08:00",
+      "protocol": "HTTP/2",
+      "via": "[::1]:443",
+      "hostCount": 6,
+      "privateFieldsRemoved": true
+    }
+  },
+  "immediateStopVerification": {
+    "time": "2026-10-05T22:34:25.2112785+08:00",
+    "durationSeconds": 0.0379637,
+    "responseOk": true,
+    "activeSteamConnectionsBefore": 6,
+    "activeSteamConnectionsAfter": 0,
+    "steamActiveAfterStop": false,
+    "hostsRestoredExactly": true,
+    "originalHostsSha256": "E521CD7A5443F67FD34C02AE6B28AFEFF685712E3E983BDB37A0CB88ADF81604",
+    "existingHostsEntriesPreserved": true,
+    "passed": true
+  },
+  "fix": {
+    "affectedConnectionsClosedBeforeHostsRestore": true,
+    "windowsAtomicReplacementRetryBoundSeconds": 3,
+    "candidateInitialFailurePreserved": true,
+    "candidateFailure": "此前D545候选首次恢复出现renameAccessDenied，等待连接空闲关闭后重试成功",
+    "finalBuildClientReverified": true,
+    "finalBuildChainReverified": true,
+    "finalBuildImmediateStopReverified": true
+  },
+  "nodePolicyEvidence": {
+    "testedOnFinalBuild": "9DDD27EDE94DCAE4F8A060CED80D2395C156199D13CC6CFC47DDC50B20C3F439",
+    "time": "2026-10-05T22:40:27.8530892+08:00",
+    "pinConfirmed": true,
+    "pinnedSamplePassed": true,
+    "pinnedSampleBytes": 745040,
+    "pinnedSampleSha256": "C0C3800733DF222E5264B1CEE42EDA79C7EDBAB04D77658AE3AA5325F27C6A1D",
+    "blockedConnectHttpStatus": 502,
+    "blockedCurlExitCode": 7,
+    "blockedCreatedTargetConnections": 0,
+    "policyRestored": true,
+    "restoredPinnedIp": "",
+    "restoredBlockedIps": [],
+    "countingRule": "仅统计download6目标连接事件；error事件不算新建网络连接",
+    "note": "最终构建重新执行固定和拉黑检查；原空固定项和黑名单已恢复"
+  },
+  "postAcceptanceAction": {
+    "steamHostsReenabledForUser": true,
+    "existingDownloadQueueLeftPaused": true
+  },
+  "scope": {
+    "covered": "本次精确下载域名的Steam → 回环助手 → 官方缓存IPv6",
+    "allSteamTrafficIpv6Guaranteed": false,
+    "excluded": [
+      "Steam登录、商店、游戏联机和UDP",
+      "未接管的新下载域名",
+      "其他进程",
+      "路由器隧道内部和CDN到源站"
+    ],
+    "privacy": "未包含账号、游戏、应用标识、PID、授权请求、个人路径、原始TCP快照或Steam公网登录连接"
+  }
+}

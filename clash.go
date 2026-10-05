@@ -124,7 +124,20 @@ func (a *App) clashActionLocked(action, sourceID string, hosts []string) error {
 		}
 		expected := injectClash(string(s.Original), s.AdditionProxy, s.AdditionRules)
 		if string(current) != expected {
-			return errors.New("Clash profile changed after enabling; keep backup and restore manually to preserve your edits")
+			// A subscription refresh may already have removed our profile additions
+			// and live rules. Preserve that refreshed configuration instead of
+			// reloading a stale backup. Any unresolved helper reference fails closed.
+			if e = clashExternallyRemoved(c, current); e != nil {
+				return fmt.Errorf("Clash profile changed after enabling; keep backup and restore manually to preserve your edits: %w", e)
+			}
+			latest, readErr := os.ReadFile(s.Profile)
+			if readErr != nil {
+				return readErr
+			}
+			if !bytes.Equal(latest, current) {
+				return errors.New("Clash profile changed during restore verification; keep recovery record")
+			}
+			return os.Rename(statePath, filepath.Join(a.dir, "clash-restored-external-"+time.Now().Format("20060102-150405.000000000")+".json"))
 		}
 		// Reload the original merged configuration before removing persistent changes.
 		path := filepath.Join(s.Data, "epic-ipv6-restore.yaml")
@@ -308,6 +321,74 @@ func (a *App) clashActionLocked(action, sourceID string, hosts []string) error {
 		}
 	}
 	return nil
+}
+
+// Verify all three independent sources before treating a modified profile as
+// already restored. No persistent or live configuration is written here.
+func clashExternallyRemoved(c clashClient, current []byte) error {
+	if bytes.Contains(current, []byte("EpicIPv6Helper")) {
+		return errors.New("managed marker or proxy reference remains in profile")
+	}
+	var profile map[string]any
+	if e := yaml.Unmarshal(current, &profile); e != nil || profile == nil {
+		return errors.New("modified Clash profile is not a valid configuration")
+	}
+	if hasClashManagedReference(profile) {
+		return errors.New("managed proxy reference remains in decoded profile")
+	}
+	var inventory map[string]any
+	if e := c.call("GET", "/proxies", nil, &inventory); e != nil {
+		return e
+	}
+	proxies, ok := inventory["proxies"].(map[string]any)
+	if !ok {
+		return errors.New("Clash proxy inventory is missing or invalid")
+	}
+	if _, exists := proxies[clashName]; exists || hasClashManagedReference(proxies) {
+		return errors.New("managed proxy or group reference remains live")
+	}
+	var result map[string]any
+	if e := c.call("GET", "/rules", nil, &result); e != nil {
+		return e
+	}
+	rules, ok := result["rules"].([]any)
+	if !ok {
+		return errors.New("Clash live rule inventory is missing or invalid")
+	}
+	for _, item := range rules {
+		rule, ok := item.(map[string]any)
+		if !ok {
+			return errors.New("Clash live rule is invalid")
+		}
+		proxy, ok := rule["proxy"].(string)
+		if !ok || proxy == "" {
+			return errors.New("Clash live rule target is missing or invalid")
+		}
+		if hasClashManagedReference(rule) {
+			return errors.New("managed proxy reference remains in live rules")
+		}
+	}
+	return nil
+}
+
+func hasClashManagedReference(value any) bool {
+	switch v := value.(type) {
+	case string:
+		return strings.Contains(v, "EpicIPv6Helper")
+	case []any:
+		for _, item := range v {
+			if hasClashManagedReference(item) {
+				return true
+			}
+		}
+	case map[string]any:
+		for key, item := range v {
+			if hasClashManagedReference(key) || hasClashManagedReference(item) {
+				return true
+			}
+		}
+	}
+	return false
 }
 func injectClash(src, p, r string) string {
 	for _, block := range []struct{ key, addition string }{{"proxies:", p}, {"rules:", r}} {

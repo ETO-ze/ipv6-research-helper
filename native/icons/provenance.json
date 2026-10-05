@@ -1,5 +1,12 @@
 [
   {
+    "id": "steam",
+    "website": "https://store.steampowered.com",
+    "icon": "https://store.steampowered.com/favicon.ico",
+    "file": "steam.img",
+    "exit": 0
+  },
+  {
     "id": "githubraw",
     "website": "https://github.com",
     "icon": "https://github.com/fluidicon.png",

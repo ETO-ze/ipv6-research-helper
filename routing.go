@@ -35,6 +35,7 @@ func routePlans() []RoutePlan {
 		{"cern", "CERN Open Data", "Ce", "主站公开文件", "已验证主站 PDF；EOS 和其他大数据服务器不在此项范围内。", []string{"opendata.cern.ch"}},
 		{"pmc", "PMC 云文件", "Pm", "官方 IPv6 云对象地址", "仅接管官方 dualstack 地址；不会解密 HTTPS 或改写网站发出的其他地址。普通 PMC 论文页面不在范围内。", []string{"pmc-oa-opendata.s3.dualstack.us-east-1.amazonaws.com"}},
 		{"epic", "Epic Games", "EP", "UE 引擎与游戏下载", "保留原有 Epic 官方 CDN 转发规则。", hostnames()},
+		{"steam", "Steam", "St", "官方 SteamCache 游戏下载", "从本机 Steam 日志发现精确缓存域名，hosts → 本机 HTTP/TLS 转发 → 官方 IPv6；无需 Clash，需要管理员。启动后暂停再继续下载；新服务器请刷新并重新启用。未知缓存、登录和 UDP 不在保证范围内。", steamHosts()},
 	}
 	for _, source := range researchSources {
 		found := false
@@ -82,9 +83,13 @@ type RoutingStatus struct {
 	Active   bool     `json:"active"`
 	SourceID string   `json:"sourceID"`
 	Hosts    []string `json:"hosts"`
+	Mode     string   `json:"mode,omitempty"`
 }
 
 func (a *App) routingStatus() RoutingStatus {
+	if s, e := a.steamState(); e == nil && a.steamActive() {
+		return RoutingStatus{true, "steam", s.Hosts, "hosts"}
+	}
 	var s clashState
 	b, e := os.ReadFile(filepath.Join(a.dir, "clash-state.json"))
 	if e != nil || json.Unmarshal(b, &s) != nil {
@@ -96,11 +101,16 @@ func (a *App) routingStatus() RoutingStatus {
 	if len(s.Hosts) == 0 {
 		s.Hosts = hostnames()
 	}
-	return RoutingStatus{true, s.SourceID, s.Hosts}
+	return RoutingStatus{true, s.SourceID, s.Hosts, "clash"}
 }
 func (a *App) switchRoute(p RoutePlan) error {
 	a.networkMu.Lock()
 	defer a.networkMu.Unlock()
+	if p.ID == "steam" {
+		if e := a.steamPreflight(p.Hosts); e != nil {
+			return e
+		}
+	}
 	// Check before restoration: an unavailable new selection must not stop the
 	// user's current route. DNS availability is not a file-download guarantee.
 	if p.ID != "epic" {
@@ -123,8 +133,24 @@ func (a *App) switchRoute(p RoutePlan) error {
 		}
 	}
 	// Restoration checks for concurrent user edits before touching any configuration.
+	if p.ID == "steam" {
+		if e := a.ensureSteamListenersLocked(); e != nil {
+			return e
+		}
+	}
+	if e := a.restoreSteamLocked(); e != nil {
+		return e
+	}
+	if p.ID == "steam" {
+		if e := a.hosts(false); e != nil {
+			return e
+		}
+	}
 	if e := a.clashActionLocked("restore", "", nil); e != nil {
 		return e
+	}
+	if p.ID == "steam" {
+		return a.steamApplyLocked(p.Hosts)
 	}
 	if e := a.clashActionLocked("enable", p.ID, p.Hosts); e != nil {
 		return fmt.Errorf("启动接管失败（已停止先前接管）：%w", e)

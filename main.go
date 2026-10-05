@@ -66,36 +66,44 @@ type cacheItem struct {
 	attempts []DNSAttempt
 }
 type App struct {
-	nodeMu       sync.Mutex
-	nodePolicies map[string]NodePolicy
-	research     *researchManager
-	startupError string
-	verifyMu     sync.Mutex
-	mu           sync.Mutex
-	networkMu    sync.Mutex
-	entries      []*Entry
-	active       map[uint64]net.Conn
-	cache        map[string]cacheItem
-	serial       atomic.Uint64
-	down         atomic.Int64
-	up           atomic.Int64
-	v6           atomic.Uint64
-	denied       atomic.Uint64
-	dir          string
-	token        string
-	hostsPath    string
-	managed      bool
-	transport    *http.Transport
-	doh          *http.Client
-	journal      *os.File
-	listeners    []net.Listener
-	done         chan struct{}
-	stopOnce     sync.Once
-	started      time.Time
+	nodeMu                sync.Mutex
+	nodePolicies          map[string]NodePolicy
+	research              *researchManager
+	startupError          string
+	verifyMu              sync.Mutex
+	mu                    sync.Mutex
+	networkMu             sync.Mutex
+	listenerMu            sync.Mutex
+	stopping              bool
+	entries               []*Entry
+	active                map[uint64]net.Conn
+	cache                 map[string]cacheItem
+	serial                atomic.Uint64
+	down                  atomic.Int64
+	up                    atomic.Int64
+	v6                    atomic.Uint64
+	denied                atomic.Uint64
+	dir                   string
+	token                 string
+	hostsPath             string
+	managed               bool
+	transport             *http.Transport
+	doh                   *http.Client
+	journal               *os.File
+	listeners             []net.Listener
+	done                  chan struct{}
+	stopOnce              sync.Once
+	started               time.Time
+	steamListenersStarted bool
+	steamRestoring        atomic.Bool
+	steamRouteEpoch       atomic.Uint64
 }
 
-func norm(h string) string      { return strings.TrimSuffix(strings.ToLower(h), ".") }
-func allowedHost(h string) bool { _, ok := allowed[norm(h)]; return ok || researchHost(h) }
+func norm(h string) string { return strings.TrimSuffix(strings.ToLower(h), ".") }
+func allowedHost(h string) bool {
+	_, ok := allowed[norm(h)]
+	return ok || researchHost(h) || steamHost(h)
+}
 func publicV6(ip net.IP) bool {
 	return ip != nil && ip.To4() == nil && ip.IsGlobalUnicast() && !ip.IsPrivate()
 }
@@ -197,6 +205,11 @@ func (a *App) connect(ctx context.Context, host string, ip net.IP, port, kind st
 	if !publicV6(ip) {
 		return nil, errors.New("non-public or IPv4 upstream denied")
 	}
+	steam := kind != "dns6" && steamHost(host)
+	steamEpoch := a.steamRouteEpoch.Load()
+	if steam && a.steamRestoring.Load() {
+		return nil, errors.New("Steam 接管正在恢复，未建立新的下载连接")
+	}
 	if kind != "dns6" {
 		a.nodeMu.Lock()
 		ok := a.nodeAllowedLocked(host, ip.String())
@@ -223,8 +236,13 @@ func (a *App) connect(ctx context.Context, host string, ip net.IP, port, kind st
 	}
 	en := &Entry{ID: a.serial.Add(1), Time: time.Now().Format(time.RFC3339), Host: host, Remote: c.RemoteAddr().String(), Kind: kind, Active: true}
 	cc := &countedConn{Conn: c, a: a, e: en}
-	a.v6.Add(1)
 	a.mu.Lock()
+	if steam && (a.steamRestoring.Load() || a.steamRouteEpoch.Load() != steamEpoch) {
+		a.mu.Unlock()
+		c.Close()
+		return nil, errors.New("Steam 接管在连接期间已恢复，下载连接已关闭")
+	}
+	a.v6.Add(1)
 	a.entries = append(a.entries, en)
 	a.active[en.ID] = cc
 	a.trim()
@@ -565,7 +583,7 @@ func (a *App) state() any {
 		entries[i] = *e
 	}
 	_, bypassErr := os.Stat(filepath.Join(a.dir, "proxy-bypass-state.json"))
-	return map[string]any{"application": productID, "version": appVersion, "startupError": a.startupError, "dataDirectory": a.dir, "started": a.started.Format(time.RFC3339), "pid": os.Getpid(), "hostsActive": a.managed, "proxyBypassActive": bypassErr == nil, "epicProxyActive": a.epicProxyActive(), "clashActive": a.clashActive(), "ipv6Connections": a.v6.Load(), "ipv4Connections": 0, "down": a.down.Load(), "up": a.up.Load(), "blocked": a.denied.Load(), "entries": entries, "domains": hostnames(), "scope": "Helper upstream TCP and DNS use IPv6 only. Epic bypass traffic and encrypted redirects require external audit."}
+	return map[string]any{"application": productID, "version": appVersion, "startupError": a.startupError, "dataDirectory": a.dir, "started": a.started.Format(time.RFC3339), "pid": os.Getpid(), "hostsActive": a.managed, "steamActive": a.steamActive(), "proxyBypassActive": bypassErr == nil, "epicProxyActive": a.epicProxyActive(), "clashActive": a.clashActive(), "ipv6Connections": a.v6.Load(), "ipv4Connections": 0, "down": a.down.Load(), "up": a.up.Load(), "blocked": a.denied.Load(), "entries": entries, "domains": hostnames(), "scope": "Helper upstream TCP and DNS use IPv6 only. Epic bypass traffic and encrypted redirects require external audit."}
 }
 func (a *App) epicProxyActive() bool {
 	_, e := os.Stat(filepath.Join(a.dir, "epic-install-proxy-state.json"))
@@ -654,6 +672,10 @@ func (a *App) ui(w http.ResponseWriter, r *http.Request) {
 		a.upstreamAPI(w, r)
 		return
 	}
+	if r.URL.Path == "/api/steam" && r.Method == "GET" {
+		a.steamAPI(w, r)
+		return
+	}
 	if r.Method != "POST" || r.Header.Get("X-Token") != a.token || (r.Header.Get("Origin") != "" && r.Header.Get("Origin") != "http://127.0.0.1:17890") {
 		http.Error(w, "Forbidden", 403)
 		return
@@ -661,6 +683,10 @@ func (a *App) ui(w http.ResponseWriter, r *http.Request) {
 	var e error
 	if strings.HasPrefix(r.URL.Path, "/api/upstreams/") {
 		a.upstreamAPI(w, r)
+		return
+	}
+	if strings.HasPrefix(r.URL.Path, "/api/steam/") {
+		a.steamAPI(w, r)
 		return
 	}
 	if r.URL.Path == "/api/routing/start" {
@@ -675,7 +701,10 @@ func (a *App) ui(w http.ResponseWriter, r *http.Request) {
 	case "/api/start":
 		e = a.hosts(true)
 	case "/api/stop":
-		e = a.hosts(false)
+		e = a.restoreSteam()
+		if e == nil {
+			e = a.hosts(false)
+		}
 	case "/api/clash":
 		e = a.clashAction("enable")
 	case "/api/restore-clash":
@@ -695,7 +724,10 @@ func (a *App) ui(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(a.verify(ctx))
 		return
 	case "/api/shutdown":
-		if e = a.clashAction("restore"); e == nil {
+		if e = a.restoreSteam(); e == nil {
+			e = a.clashAction("restore")
+		}
+		if e == nil {
 			e = a.networkAction("RestoreEpicProxy")
 		}
 		if e == nil {
@@ -722,10 +754,14 @@ func (a *App) ui(w http.ResponseWriter, r *http.Request) {
 }
 func (a *App) stop() {
 	a.stopOnce.Do(func() {
+		a.listenerMu.Lock()
+		a.stopping = true
+		listeners := append([]net.Listener{}, a.listeners...)
+		a.listenerMu.Unlock()
 		if a.research != nil {
 			a.research.shutdown()
 		}
-		for _, l := range a.listeners {
+		for _, l := range listeners {
 			l.Close()
 		}
 		a.transport.CloseIdleConnections()

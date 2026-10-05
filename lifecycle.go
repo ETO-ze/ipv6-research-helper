@@ -17,7 +17,7 @@ import (
 	"time"
 )
 
-const appVersion = "0.7.0"
+const appVersion = "0.8.0"
 const productID = "EpicIPv6Helper"
 
 func openDashboard() {
@@ -65,6 +65,9 @@ func existingService(action string) bool {
 	return true
 }
 func (a *App) restoreAll() error {
+	if e := a.restoreSteam(); e != nil {
+		return e
+	}
 	if e := a.clashAction("restore"); e != nil {
 		return e
 	}
@@ -146,29 +149,44 @@ func run() error {
 		return a.restoreAll()
 	}
 	specs := []string{"127.0.0.1:17890", "127.0.0.1:17891", bindIP + ":80", bindIP + ":443"}
+	var baseListeners []net.Listener
 	for _, s := range specs {
 		l, e := net.Listen("tcp4", s)
 		if e != nil {
 			a.stop()
 			return fmt.Errorf("无法监听 %s，请先退出旧版助手或检查端口占用：%w", s, e)
 		}
+		a.listenerMu.Lock()
 		a.listeners = append(a.listeners, l)
+		a.listenerMu.Unlock()
+		baseListeners = append(baseListeners, l)
 	}
 	defer a.stop()
-	go (&http.Server{Handler: http.HandlerFunc(a.ui), ReadHeaderTimeout: 5 * time.Second}).Serve(a.listeners[0])
-	for _, l := range a.listeners[1:3] {
+	// A valid Steam block may survive a crash. Resume its local listeners even
+	// in manual mode, without writing hosts or replacing another tool's rules.
+	if a.steamActive() {
+		a.networkMu.Lock()
+		resumeErr := a.ensureSteamListenersLocked()
+		a.networkMu.Unlock()
+		if resumeErr != nil {
+			a.startupError = "Steam 已有 hosts 接管，但恢复本机监听失败：" + resumeErr.Error() + "。请恢复配置后重试。"
+			log.Print(a.startupError)
+		}
+	}
+	go (&http.Server{Handler: http.HandlerFunc(a.ui), ReadHeaderTimeout: 5 * time.Second}).Serve(baseListeners[0])
+	for _, l := range baseListeners[1:3] {
 		go (&http.Server{Handler: http.HandlerFunc(a.proxy), ReadHeaderTimeout: 15 * time.Second, IdleTimeout: 90 * time.Second, MaxHeaderBytes: 65536}).Serve(l)
 	}
 	go func() {
 		for {
-			c, e := a.listeners[3].Accept()
+			c, e := baseListeners[3].Accept()
 			if e != nil {
 				return
 			}
 			go a.tlsTunnel(c)
 		}
 	}()
-	if !*manual {
+	if !*manual && !a.steamActive() {
 		var activateErr error
 		if a.clashActive() {
 			activateErr = a.checkClashRoute()
