@@ -4,15 +4,19 @@
 
 Go 网络引擎 + C# WPF 界面 · 单文件 EXE · 中文界面 · 本机运行 · 不打开浏览器
 
-[下载 Windows 版](https://github.com/ETO-ze/ipv6-research-helper/releases/latest) · [使用手册](docs/USER-GUIDE.md) · [Steam 说明](docs/STEAM.md) · [构建说明](docs/DEVELOPMENT.md) · [本次验收记录](docs/acceptance/2026-10-05.md) · [问题反馈](https://github.com/ETO-ze/ipv6-research-helper/issues)
+[下载 Windows 版 0.8.1](https://github.com/ETO-ze/ipv6-research-helper/releases/download/v0.8.1/IPv6-Research-Helper-0.8.1-windows-x64.exe) · [使用手册](docs/USER-GUIDE.md) · [Steam 说明](docs/STEAM.md) · [构建说明](docs/DEVELOPMENT.md) · [0.8.1 验收](docs/acceptance/2026-10-06.md) · [0.8.0 历史验收](docs/acceptance/2026-10-05.md) · [问题反馈](https://github.com/ETO-ze/ipv6-research-helper/issues)
 
-![0.8.0 原生平台列表与 Steam 下载接管](docs/images/platform-steam-light-0.8.0.png)
+![0.8.1 原生平台列表与保存的验收状态](docs/images/platform-accepted-light-0.8.1.jpg)
+
+[查看深色界面](docs/images/platform-accepted-dark-0.8.1.jpg)
 
 ## 为什么做这个软件
 
 下载大型引擎、科研软件、论文和数据时，想明确知道流量是否走 IPv6，而不必每次手动修改代理、查找 CDN 地址。这个项目把平台选择、域名接管、真实文件检测和上游 IP 管理放在同一个桌面窗口中。
 
-当前版本为 **0.8.0**，处于早期发布阶段。列表登记了 **Epic + Steam + 37 类科研来源，共 39 项**，登记不代表该平台所有资源都可用。软件显示本机实际检测结果，不会把“DNS 查到了地址”当成“文件下载通过”。
+当前版本为 **0.8.1**，处于早期发布阶段。列表登记了 **Epic + Steam + 37 类科研来源，共 39 项**，登记不代表该平台所有资源都可用。软件显示本机实际检测结果，不会把“DNS 查到了地址”当成“文件下载通过”。
+
+0.8.1 保存 Steam/Epic 最近一次实际链路验收结果，重启后继续显示“已验收”或“验收未通过”，无需每次打开重复验收。可以查看验收时间、版本、范围和原因；最近一次失败会覆盖旧成功。保存的通过记录代表当时的链路，网络或 CDN 变化后可主动重新验证。
 
 Steam 新功能从本机日志发现官方缓存的精确域名，使用管理员权限写入 hosts，经本机双栈回环转发到官方 IPv6，不依赖 Clash。原软件国区 CDN 镜像未接入本版，失败候选也没有标成可用。操作、样本和边界见 [Steam 说明](docs/STEAM.md)；参考软件的配置与接口分析见 [只读分析](docs/ORIGINAL-SOFTWARE-ANALYSIS.md)。
 
@@ -30,11 +34,12 @@ Steam 新功能从本机日志发现官方缓存的精确域名，使用管理�
 | 本机文件下载 | 任务进度、暂停/继续、断点处理、SHA256 计算和可选预期哈希校验 |
 | Epic 验收 | 真实 UE 数据块校验、规则检查、拒绝 IPv4 目标和系统 TCP 采样 |
 | Steam 样本验收 | 校验真实内容块的长度、响应头与独立 IPv6 传输参照 SHA256；与客户端实际接管证据分别核对 |
+| 验收结果保留 | 保存 Steam/Epic 最近结果并在重启后载入；显示时间、范围与原因，失败覆盖旧成功 |
 | 原生界面 | WPF 桌面窗口，浅色/深色主题，运行状态和恢复配置入口 |
 
 ## 快速开始
 
-1. 从 [Releases](https://github.com/ETO-ze/ipv6-research-helper/releases/latest) 下载 `IPv6-Research-Helper-0.8.0-windows-x64.exe`。使用 Steam 接管时，右键“以管理员身份运行”；其他方式可按原入口启动。
+1. 下载 [IPv6-Research-Helper-0.8.1-windows-x64.exe](https://github.com/ETO-ze/ipv6-research-helper/releases/download/v0.8.1/IPv6-Research-Helper-0.8.1-windows-x64.exe)。使用 Steam 接管时，右键“以管理员身份运行”；其他方式可按原入口启动。
 2. **Steam**：先在 Steam 开始所需下载，再在助手点击 Steam 图标和“刷新下载服务器”，选择精确缓存服务。**Epic/科研来源自动接管**：需要本机已有可工作的 Clash for Windows 规则模式，原客户端须通过它联网。手动文件下载不需要 Clash。
 3. 在“平台自动接管”选择服务/域名，查看检测状态和上游 IP，再启动接管。
 4. 回到原网站或客户端继续下载。已有长连接可能需要暂停后继续，才会重新建立连接。
@@ -59,7 +64,13 @@ Steam 精确下载域名 → hosts → 127.0.0.23 / ::1:80/443 → 助手 → �
 - Steam 仅覆盖本次选择的官方缓存域名。新增缓存需刷新、重新应用并在 Steam 暂停后继续；登录、商店、联机和未知域名不在保证范围内，不修改下载地区或凭据。
 - 战网等其他游戏平台尚未实现。
 
-## 0.8.0 Steam 新增范围与实测
+## 0.8.1 验收：2026-10-06
+
+本版修复验收结果持久化与界面状态，不改变 Steam 路由算法。本机真实样本链路 **Steam 8 项、Epic 7 项通过**；37 类科研来源检测完成，**13 个样本通过**，其他来源保留实际失败或待文件验证状态。这次未启用 hosts/Clash，不能视为新版完整客户端接管验收。
+
+洁净源码 **76 个顶层、162 项含子测试通过，2 项明确跳过，go vet 通过**。0.8.1 EXE 为 **9,247,744 字节**；旧报告迁移、原生状态颜色和最终 EXE 重启保持均已核对，Steam/Epic 与 37 个科研来源结果保留。范围及哈希见 [0.8.1 验收记录](docs/acceptance/2026-10-06.md)。
+
+## 0.8.0 历史 Steam 验收
 
 2026-10-05，最终构建完成**管理员实际 Steam 下载接管**：25.452 秒、22 次采样中，Steam 回环连接观测 **120 次**，助手反向四元组匹配 **120 次**；助手公网 IPv6 观测 **120 次**，IPv4 **0 次**。六个官方缓存内容流累计增加 **250,120,379 字节**。这些是快照观测次数，短连接可能未被捕获，不代表整个 Steam 或全机流量。
 
@@ -102,7 +113,7 @@ go vet ./...
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build.ps1
 ```
 
-输出 `output/IPv6-Research-Helper-0.8.0-windows-x64.exe`。可选真实样本、环境和 CI 边界见 [开发说明](docs/DEVELOPMENT.md)。
+输出 `output/IPv6-Research-Helper-0.8.1-windows-x64.exe`。可选真实样本、环境和 CI 边界见 [开发说明](docs/DEVELOPMENT.md)。
 
 ## 本地数据与反馈
 

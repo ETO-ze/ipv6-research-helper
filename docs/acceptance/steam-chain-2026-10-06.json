@@ -1,0 +1,50 @@
+{
+  "version": "0.8.1",
+  "started": "2026-10-06T16:39:09+08:00",
+  "finished": "2026-10-06T16:39:10.7133813+08:00",
+  "passed": true,
+  "scope": "验证 Steam 完整传输块与本机 TLS 转发；哈希来自六个官方缓存的独立 IPv6 下载参照，不是 Valve 签名；未解密最终游戏文件。实际客户端接管需同时检查 Steam 日志和进程连接。",
+  "checks": [
+    {
+      "name": "官方 SteamCache HTTPS / cache7-hkg1.steamcontent.com",
+      "passed": true,
+      "detail": "745040 字节，真实内容块头和传输参照 SHA256 一致，TLS 正常校验"
+    },
+    {
+      "name": "官方 SteamCache HTTPS / cache8-hkg1.steamcontent.com",
+      "passed": true,
+      "detail": "745040 字节，真实内容块头和传输参照 SHA256 一致，TLS 正常校验"
+    },
+    {
+      "name": "Steam 本地 IPv6 TLS 监听",
+      "passed": true,
+      "detail": "仅监听 ::1:80/443，与 127.0.0.23 双栈回环配合"
+    },
+    {
+      "name": "Steam 本地 TLS 原样转发",
+      "passed": true,
+      "detail": "::1 → 助手 → 官方缓存 IPv6，原域名、证书和内容块校验通过；不证明 Steam 客户端已经使用此路径"
+    },
+    {
+      "name": "当前接管状态",
+      "passed": true,
+      "detail": "未启用 hosts；本次为独立代理与 TLS 转发验收，客户端接管尚需管理员启用"
+    },
+    {
+      "name": "未知或 IPv4 目标拒绝 http://not-steam.example/chunk",
+      "passed": true,
+      "detail": "403，未创建外网上游"
+    },
+    {
+      "name": "未知或 IPv4 目标拒绝 http://1.1.1.1/chunk",
+      "passed": true,
+      "detail": "403，未创建外网上游"
+    },
+    {
+      "name": "真实 IPv6 上游",
+      "passed": true,
+      "detail": "本次新建 5 条 IPv6 连接；下载和 DNS 使用 tcp6，无 IPv4 回退"
+    }
+  ],
+  "report": ""
+}

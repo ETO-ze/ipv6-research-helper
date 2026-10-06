@@ -66,6 +66,8 @@ type cacheItem struct {
 	attempts []DNSAttempt
 }
 type App struct {
+	acceptanceMu          sync.Mutex
+	acceptance            map[string]Verification
 	nodeMu                sync.Mutex
 	nodePolicies          map[string]NodePolicy
 	research              *researchManager
@@ -143,6 +145,7 @@ func newApp(dir string) (*App, error) {
 		f.Close()
 		return nil, err
 	}
+	a.initAcceptance()
 	return a, nil
 }
 func (a *App) record(e *Entry) { b, _ := json.Marshal(e); a.journal.Write(append(b, '\n')) }

@@ -141,7 +141,7 @@
 </ScrollViewer>
 
  </Grid>
- <Border Grid.Row="2" Background="{DynamicResource Panel}" BorderBrush="{DynamicResource Line}" BorderThickness="0,1,0,0" Padding="20,0"><DockPanel><TextBlock Text="v0.8.0  ·  IPv6 ONLY  ·  本地运行" DockPanel.Dock="Right" Foreground="{DynamicResource Muted}" FontSize="10" VerticalAlignment="Center"/><TextBlock x:Name="FooterStatus" Text="正在准备本地服务…" Foreground="{DynamicResource Muted}" FontSize="11" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/></DockPanel></Border>
+ <Border Grid.Row="2" Background="{DynamicResource Panel}" BorderBrush="{DynamicResource Line}" BorderThickness="0,1,0,0" Padding="20,0"><DockPanel><TextBlock Text="v0.8.1  ·  IPv6 ONLY  ·  本地运行" DockPanel.Dock="Right" Foreground="{DynamicResource Muted}" FontSize="10" VerticalAlignment="Center"/><TextBlock x:Name="FooterStatus" Text="正在准备本地服务…" Foreground="{DynamicResource Muted}" FontSize="11" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/></DockPanel></Border>
  <Grid x:Name="Overlay" Grid.RowSpan="3" Background="#650F172A" Visibility="Collapsed"><Border Width="650" MaxHeight="690" Background="{DynamicResource Panel}" BorderBrush="{DynamicResource Line}" BorderThickness="1" CornerRadius="24" Padding="26" HorizontalAlignment="Center" VerticalAlignment="Center"><DockPanel><Button x:Name="DismissDialog" Content="关闭" DockPanel.Dock="Bottom" HorizontalAlignment="Right" Margin="0,18,0,0"/><ScrollViewer VerticalScrollBarVisibility="Auto"><StackPanel x:Name="DialogContent"/></ScrollViewer></DockPanel></Border></Grid>
 </Grid></Border></Window>
 

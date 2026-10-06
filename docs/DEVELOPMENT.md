@@ -2,7 +2,7 @@
 
 ## 环境与构建
 
-Windows x64；Go 1.24+；系统 .NET Framework C# 编译器和 WPF 程序集。界面使用系统编译器兼容语法，不依赖 Electron 或浏览器容器。0.8.0 构建使用 Go 1.27.1 和 Framework64 编译器，平台登记为 Epic + Steam + 37 类科研来源，共 39 项。
+Windows x64；Go 1.24+；系统 .NET Framework C# 编译器和 WPF 程序集。界面使用系统编译器兼容语法，不依赖 Electron 或浏览器容器。当前版本为 0.8.1，平台登记为 Epic + Steam + 37 类科研来源，共 39 项；0.8.0 历史构建使用 Go 1.27.1 和 Framework64 编译器。
 
 ```powershell
 git clone https://github.com/ETO-ze/ipv6-research-helper.git
@@ -12,7 +12,7 @@ go vet ./...
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build.ps1
 ```
 
-build.ps1 先构建 Go 引擎，再将引擎、XAML 和图标嵌入 WPF EXE，输出 `output/IPv6-Research-Helper-0.8.0-windows-x64.exe`。输出目录不入 Git。本地兼容管理页保留在 dashboard.html；桌面入口用 `--no-open --manual` 启动引擎，不打开浏览器。
+build.ps1 先构建 Go 引擎，再将引擎、XAML 和图标嵌入 WPF EXE，输出 `output/IPv6-Research-Helper-0.8.1-windows-x64.exe`。输出目录不入 Git。本地兼容管理页保留在 dashboard.html；桌面入口用 `--no-open --manual` 启动引擎，不打开浏览器。
 
 ## 测试层次
 
@@ -40,7 +40,13 @@ GitHub Actions 在 Windows 运行默认测试、go vet 和桌面构建，提供 
 
 本地管理服务监听 127.0.0.1:17890，HTTP 代理为 127.0.0.1:17891；还保留 Epic 本机映射监听入口。修改操作需要每次启动生成的本机 token。引擎执行精确域名允许列表，出站显式使用 tcp6，HTTPS 保留证书校验。
 
-### Steam 0.8.0
+### 0.8.1 验收状态持久化
+
+Steam/Epic 保存最近一次实际链路验收结果，启动时重新载入，通过与失败都必须保存，最近失败覆盖旧成功。接管启用、DNS 成功或旧报告文件存在都不能直接生成通过状态。接口记录包含 `status`、`passed`、`checked`、`scope`、`detail`、`version`；原生界面在平台列表和详情展示结果、时间、版本与范围。
+
+验收记录与接管状态独立：停止接管不抹掉历史结果，历史通过也不证明当前或未来网络可用。科研来源沿用逐来源 health 和真实样本状态，不由 Steam/Epic 的验收结果覆盖。回归应分别覆盖无记录、成功保存和重载、失败覆盖成功、记录异常及科研 health 重载；最终 EXE 的界面显示还需单独检查。
+
+### Steam 接管（自 0.8.0）
 
 `steam.go` 从本机 Steam 内容日志提取符合严格格式的 `cacheN-region.steamcontent.com` 名称，按精确域名建立服务。用户手动刷新并重新应用后，管理员写入的管理块同时映射到 `127.0.0.23` 与 `::1`，本机 80/443 入口按 HTTP Host/TLS SNI 转发，外网上游为该主机官方 AAAA 的 TCP6。TLS 字节原样转发，不安装证书、不解密 Steam 流量，不依赖 Clash，也不将整个 Steam 域名后缀指向任意同一节点。
 

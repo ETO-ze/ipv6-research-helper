@@ -17,7 +17,7 @@ import (
 	"time"
 )
 
-const appVersion = "0.8.0"
+const appVersion = "0.8.1"
 const productID = "EpicIPv6Helper"
 
 func openDashboard() {

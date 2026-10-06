@@ -5,6 +5,7 @@ import (
 	"context"
 	"crypto/sha256"
 	"encoding/hex"
+	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
@@ -15,6 +16,54 @@ import (
 	"testing"
 	"time"
 )
+
+func TestResearchHealthReload(t *testing.T) {
+	passed := SourceHealth{ID: "pypi", Status: "样本通过", Code: "sample_passed", Checked: time.Now().Add(-time.Minute).Format(time.RFC3339), Bytes: 11050, HTTP: 200, SHA256: strings.Repeat("a", 64), FinalHost: "files.pythonhosted.org"}
+	for _, name := range []string{"passed", "interrupted", "null", "malformed", "incomplete-pass", "unknown-source"} {
+		t.Run(name, func(t *testing.T) {
+			dir := t.TempDir()
+			h := passed
+			if name == "interrupted" {
+				h.Status = "检测中"
+			}
+			if name == "incomplete-pass" {
+				h.Bytes = 0
+			}
+			if name == "unknown-source" {
+				h.ID = "unknown"
+			}
+			b, _ := json.Marshal(map[string]SourceHealth{h.ID: h})
+			if name == "null" {
+				b = []byte("null")
+			} else if name == "malformed" {
+				b = []byte(`{"pypi":`)
+			}
+			if e := os.WriteFile(filepath.Join(dir, "research-status.json"), b, 0600); e != nil {
+				t.Fatal(e)
+			}
+			a, e := newApp(dir)
+			if e != nil {
+				t.Fatal(e)
+			}
+			defer a.journal.Close()
+			if a.research.health == nil {
+				t.Fatal("nil health map would panic on the next check")
+			}
+			got := a.research.health["pypi"]
+			if name == "passed" {
+				if got.Status != passed.Status || got.Checked != passed.Checked || got.SHA256 != passed.SHA256 {
+					t.Fatal("complete saved sample lost", got)
+				}
+			} else if name == "interrupted" {
+				if got.Status != "上次检测中断" || got.Code != "check_interrupted" || a.research.checking {
+					t.Fatal("interrupted check still appears running", got)
+				}
+			} else if len(a.research.health) != 0 {
+				t.Fatal("invalid saved sample appeared as verified", a.research.health)
+			}
+		})
+	}
+}
 
 func TestResearchURLBoundary(t *testing.T) {
 	for _, raw := range []string{"http://zenodo.org/file", "https://zenodo.org.evil.test/x", "https://127.0.0.1/file", "https://[::1]/file", "https://user:pass@zenodo.org/x", "https://zenodo.org:444/x", "file:///C:/test", "https://unknown.test/file"} {

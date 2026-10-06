@@ -13,7 +13,6 @@ import (
 	"net/http"
 	"net/url"
 	"os"
-	"path/filepath"
 	"time"
 )
 
@@ -45,17 +44,7 @@ func (a *App) verifySteam(ctx context.Context) Verification {
 		out.Checks = append(out.Checks, Check{name, e == nil, detail})
 	}
 	finish := func() Verification {
-		out.Finished = time.Now().Format(time.RFC3339)
-		out.Passed = len(out.Checks) > 0
-		for _, c := range out.Checks {
-			out.Passed = out.Passed && c.Passed
-		}
-		out.Report = filepath.Join(a.dir, "steam-acceptance-"+time.Now().Format("20060102-150405")+".json")
-		if e := writeJSONAtomic(out.Report, out); e != nil {
-			out.Passed = false
-			out.Checks = append(out.Checks, Check{"保存报告", false, e.Error()})
-		}
-		return out
+		return a.finishVerification("steam", out)
 	}
 	proxyURL, _ := url.Parse("http://127.0.0.1:17891")
 	tr := &http.Transport{Proxy: http.ProxyURL(proxyURL), TLSHandshakeTimeout: 15 * time.Second}

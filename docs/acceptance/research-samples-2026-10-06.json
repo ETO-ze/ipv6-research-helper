@@ -1,0 +1,398 @@
+{
+  "version": "0.8.1",
+  "scope": "本机37个来源的公开样本IPv6/TLS/文件格式检查；通过仅覆盖该样本，部分为片段，不代表全平台或未来网络。",
+  "sources": [
+    {
+      "id": "zenodo",
+      "status": "样本通过",
+      "code": "sample_passed",
+      "checked": "2026-10-06T16:39:21+08:00",
+      "bytes": 65536,
+      "http": 206,
+      "sha256": "e7cb4ad5ce8e80e9b425ca96eaa81287198bc5730abcad2b87b9cd32cb78c146",
+      "finalHost": "zenodo.org"
+    },
+    {
+      "id": "ncbi",
+      "status": "样本通过",
+      "code": "sample_passed",
+      "checked": "2026-10-06T16:39:21+08:00",
+      "bytes": 10890,
+      "http": 206,
+      "sha256": "85d69f5fc7431b123d17376578ddc475679d945c989111288e1b4f3bb3c60d64",
+      "finalHost": "ftp.ncbi.nlm.nih.gov"
+    },
+    {
+      "id": "pypi",
+      "status": "样本通过",
+      "code": "sample_passed",
+      "checked": "2026-10-06T16:39:21+08:00",
+      "bytes": 11050,
+      "http": 200,
+      "sha256": "4721f391ed90541fddacab5acf947aa0d3dc7d27b2e1e8eda2be8970586c3274",
+      "finalHost": "files.pythonhosted.org"
+    },
+    {
+      "id": "conda",
+      "status": "样本通过",
+      "code": "sample_passed",
+      "checked": "2026-10-06T16:39:21+08:00",
+      "bytes": 65536,
+      "http": 206,
+      "sha256": "928ec57d9c5a9b478d7c3a8b8dd45752a450eff33149faebb79fc399667dbc54",
+      "finalHost": "repo.anaconda.com"
+    },
+    {
+      "id": "condaforge",
+      "status": "样本通过",
+      "code": "sample_passed",
+      "checked": "2026-10-06T16:39:21+08:00",
+      "bytes": 65536,
+      "http": 206,
+      "sha256": "fb07a27b61eee2635b5b5d074d74a2d3e4f90ee33d08d0c759a7d0f482b6031d",
+      "finalHost": "conda.anaconda.org"
+    },
+    {
+      "id": "githubraw",
+      "status": "样本通过",
+      "code": "sample_passed",
+      "checked": "2026-10-06T16:39:21+08:00",
+      "bytes": 8912,
+      "http": 206,
+      "sha256": "10e00b4e0bbd30b7eef0c65f492347e8d976ef8cbdfc85635492a840ff4ccf8f",
+      "finalHost": "raw.githubusercontent.com"
+    },
+    {
+      "id": "arxiv",
+      "status": "样本通过",
+      "code": "sample_passed",
+      "checked": "2026-10-06T16:39:21+08:00",
+      "bytes": 65536,
+      "http": 206,
+      "sha256": "1722de2cb69e7cc304640cf9a2c7cd79331705f19cd15a6e149d4e5e1d854ad8",
+      "finalHost": "arxiv.org"
+    },
+    {
+      "id": "openreview",
+      "status": "未查到 IPv6",
+      "code": "dns_no_aaaa",
+      "checked": "2026-10-06T16:39:21+08:00",
+      "bytes": 0,
+      "http": 0,
+      "sha256": null,
+      "finalHost": null
+    },
+    {
+      "id": "pmc",
+      "status": "样本通过",
+      "code": "sample_passed",
+      "checked": "2026-10-06T16:39:22+08:00",
+      "bytes": 65536,
+      "http": 206,
+      "sha256": "419c190e46ae8f13a82ff63f8d0f5d85acbdb5eb438e0207041044a4047b5cc2",
+      "finalHost": "pmc-oa-opendata.s3.dualstack.us-east-1.amazonaws.com"
+    },
+    {
+      "id": "biorxiv",
+      "status": "样本通过",
+      "code": "sample_passed",
+      "checked": "2026-10-06T16:39:23+08:00",
+      "bytes": 73163,
+      "http": 206,
+      "sha256": "9a995be82d752231d9ff01a0ad4313eb4a43ab58fbc096932eb1b092b835380a",
+      "finalHost": "www.biorxiv.org"
+    },
+    {
+      "id": "medrxiv",
+      "status": "需授权 / 网站验证",
+      "code": "access_required",
+      "checked": "2026-10-06T16:39:24+08:00",
+      "bytes": 0,
+      "http": 403,
+      "sha256": null,
+      "finalHost": "www.medrxiv.org"
+    },
+    {
+      "id": "figshare",
+      "status": "需授权 / 网站验证",
+      "code": "access_required",
+      "checked": "2026-10-06T16:39:25+08:00",
+      "bytes": 0,
+      "http": 403,
+      "sha256": null,
+      "finalHost": "figshare.com"
+    },
+    {
+      "id": "osf",
+      "status": "未查到 IPv6",
+      "code": "dns_no_aaaa",
+      "checked": "2026-10-06T16:39:29+08:00",
+      "bytes": 0,
+      "http": 0,
+      "sha256": null,
+      "finalHost": null
+    },
+    {
+      "id": "dataverse",
+      "status": "未查到 IPv6",
+      "code": "dns_no_aaaa",
+      "checked": "2026-10-06T16:39:33+08:00",
+      "bytes": 0,
+      "http": 0,
+      "sha256": null,
+      "finalHost": null
+    },
+    {
+      "id": "dryad",
+      "status": "未查到 IPv6",
+      "code": "dns_no_aaaa",
+      "checked": "2026-10-06T16:39:38+08:00",
+      "bytes": 0,
+      "http": 0,
+      "sha256": null,
+      "finalHost": null
+    },
+    {
+      "id": "hf",
+      "status": "连接超时",
+      "code": "connection_timeout",
+      "checked": "2026-10-06T16:39:41+08:00",
+      "bytes": 0,
+      "http": 0,
+      "sha256": null,
+      "finalHost": null
+    },
+    {
+      "id": "modelscope",
+      "status": "未查到 IPv6",
+      "code": "dns_no_aaaa",
+      "checked": "2026-10-06T16:39:41+08:00",
+      "bytes": 0,
+      "http": 0,
+      "sha256": null,
+      "finalHost": null
+    },
+    {
+      "id": "kaggle",
+      "status": "未查到 IPv6",
+      "code": "dns_no_aaaa",
+      "checked": "2026-10-06T16:39:50+08:00",
+      "bytes": 0,
+      "http": 0,
+      "sha256": null,
+      "finalHost": null
+    },
+    {
+      "id": "ena",
+      "status": "未查到 IPv6",
+      "code": "dns_no_aaaa",
+      "checked": "2026-10-06T16:39:52+08:00",
+      "bytes": 0,
+      "http": 0,
+      "sha256": null,
+      "finalHost": null
+    },
+    {
+      "id": "uniprot",
+      "status": "未查到 IPv6",
+      "code": "dns_no_aaaa",
+      "checked": "2026-10-06T16:40:07+08:00",
+      "bytes": 0,
+      "http": 0,
+      "sha256": null,
+      "finalHost": null
+    },
+    {
+      "id": "pdb",
+      "status": "未查到 IPv6",
+      "code": "dns_no_aaaa",
+      "checked": "2026-10-06T16:40:09+08:00",
+      "bytes": 0,
+      "http": 0,
+      "sha256": null,
+      "finalHost": null
+    },
+    {
+      "id": "alphafold",
+      "status": "未查到 IPv6",
+      "code": "dns_no_aaaa",
+      "checked": "2026-10-06T16:40:12+08:00",
+      "bytes": 0,
+      "http": 0,
+      "sha256": null,
+      "finalHost": null
+    },
+    {
+      "id": "github",
+      "status": "未查到 IPv6",
+      "code": "dns_no_aaaa",
+      "checked": "2026-10-06T16:40:13+08:00",
+      "bytes": 0,
+      "http": 0,
+      "sha256": null,
+      "finalHost": null
+    },
+    {
+      "id": "gitlab",
+      "status": "样本通过",
+      "code": "sample_passed",
+      "checked": "2026-10-06T16:40:20+08:00",
+      "bytes": 5869,
+      "http": 206,
+      "sha256": "c96342e8c3e4060dd75a25a9c6d3ecd59c414f73f6e08743e37d68a9829d816d",
+      "finalHost": "gitlab.com"
+    },
+    {
+      "id": "cern",
+      "status": "样本通过",
+      "code": "sample_passed",
+      "checked": "2026-10-06T16:40:21+08:00",
+      "bytes": 18170,
+      "http": 200,
+      "sha256": "5c5536af1c3be4bd9a0bafe4128ef836951724d626f0cc0fabe52436ab6a0e41",
+      "finalHost": "opendata.cern.ch"
+    },
+    {
+      "id": "hepdata",
+      "status": "需授权 / 网站验证",
+      "code": "access_required",
+      "checked": "2026-10-06T16:40:26+08:00",
+      "bytes": 0,
+      "http": 403,
+      "sha256": null,
+      "finalHost": "www.hepdata.net"
+    },
+    {
+      "id": "nasa",
+      "status": "需文件验证",
+      "code": "sample_missing",
+      "checked": "2026-10-06T16:40:28+08:00",
+      "bytes": 0,
+      "http": 0,
+      "sha256": null,
+      "finalHost": null
+    },
+    {
+      "id": "noaa",
+      "status": "样本通过",
+      "code": "sample_passed",
+      "checked": "2026-10-06T16:40:30+08:00",
+      "bytes": 65536,
+      "http": 206,
+      "sha256": "7e02fae9a146176f7301b337be1c3e226e49341fec2bb86da387c820eed13e79",
+      "finalHost": "noaa-goes16.s3.dualstack.us-east-1.amazonaws.com"
+    },
+    {
+      "id": "copernicus",
+      "status": "未查到 IPv6",
+      "code": "dns_no_aaaa",
+      "checked": "2026-10-06T16:40:37+08:00",
+      "bytes": 0,
+      "http": 0,
+      "sha256": null,
+      "finalHost": null
+    },
+    {
+      "id": "ieee",
+      "status": "样本通过",
+      "code": "sample_passed",
+      "checked": "2026-10-06T16:40:38+08:00",
+      "bytes": 65536,
+      "http": 206,
+      "sha256": "e9d5ff8d99a96f72e660bd8e4aeff1439e18eea34bb014a28d3daf38ac32faa9",
+      "finalHost": "ieeexplore.ieee.org"
+    },
+    {
+      "id": "acm",
+      "status": "未查到 IPv6",
+      "code": "dns_no_aaaa",
+      "checked": "2026-10-06T16:40:48+08:00",
+      "bytes": 0,
+      "http": 0,
+      "sha256": null,
+      "finalHost": null
+    },
+    {
+      "id": "springer",
+      "status": "未查到 IPv6",
+      "code": "dns_no_aaaa",
+      "checked": "2026-10-06T16:40:51+08:00",
+      "bytes": 0,
+      "http": 0,
+      "sha256": null,
+      "finalHost": null
+    },
+    {
+      "id": "elsevier",
+      "status": "需文件验证",
+      "code": "sample_missing",
+      "checked": "2026-10-06T16:40:54+08:00",
+      "bytes": 0,
+      "http": 0,
+      "sha256": null,
+      "finalHost": null
+    },
+    {
+      "id": "wiley",
+      "status": "需授权 / 网站验证",
+      "code": "access_required",
+      "checked": "2026-10-06T16:40:54+08:00",
+      "bytes": 0,
+      "http": 403,
+      "sha256": null,
+      "finalHost": "onlinelibrary.wiley.com"
+    },
+    {
+      "id": "cnki",
+      "status": "未查到 IPv6",
+      "code": "dns_no_aaaa",
+      "checked": "2026-10-06T16:40:54+08:00",
+      "bytes": 0,
+      "http": 0,
+      "sha256": null,
+      "finalHost": null
+    },
+    {
+      "id": "wanfang",
+      "status": "未查到 IPv6",
+      "code": "dns_no_aaaa",
+      "checked": "2026-10-06T16:40:59+08:00",
+      "bytes": 0,
+      "http": 0,
+      "sha256": null,
+      "finalHost": null
+    },
+    {
+      "id": "cqvip",
+      "status": "未查到 IPv6",
+      "code": "dns_no_aaaa",
+      "checked": "2026-10-06T16:41:06+08:00",
+      "bytes": 0,
+      "http": 0,
+      "sha256": null,
+      "finalHost": null
+    }
+  ],
+  "counts": [
+    {
+      "Name": "连接超时",
+      "Count": 1
+    },
+    {
+      "Name": "未查到 IPv6",
+      "Count": 17
+    },
+    {
+      "Name": "需授权 / 网站验证",
+      "Count": 4
+    },
+    {
+      "Name": "需文件验证",
+      "Count": 2
+    },
+    {
+      "Name": "样本通过",
+      "Count": 13
+    }
+  ]
+}

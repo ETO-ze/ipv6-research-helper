@@ -164,7 +164,7 @@ func (a *App) switchRoute(p RoutePlan) error {
 func (a *App) routingAPI(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	if r.Method == "GET" {
-		json.NewEncoder(w).Encode(map[string]any{"plans": routePlans(), "routing": a.routingStatus()})
+		json.NewEncoder(w).Encode(map[string]any{"plans": routePlans(), "routing": a.routingStatus(), "acceptance": a.acceptanceSnapshot()})
 		return
 	}
 	var input struct {

@@ -155,7 +155,26 @@ func (a *App) initResearch() error {
 	m := &researchManager{a: a, transport: a.transport, health: map[string]SourceHealth{}, jobs: map[string]*ResearchJob{}, cancels: map[string]context.CancelFunc{}, slots: make(chan struct{}, 2), root: root}
 	a.research = m
 	if b, e := os.ReadFile(filepath.Join(a.dir, "research-status.json")); e == nil {
-		json.Unmarshal(b, &m.health)
+		var saved map[string]SourceHealth
+		if json.Unmarshal(b, &saved) == nil {
+			for id, h := range saved {
+				if _, ok := sourceByID(id); !ok || h.ID != id {
+					continue
+				}
+				if h.Status == "检测中" {
+					h.Status = "上次检测中断"
+					h.Detail = "上次检测未完成，可重新检测此来源。"
+					h.Code = "check_interrupted"
+				}
+				if h.Status == "样本通过" {
+					_, checkedErr := time.Parse(time.RFC3339Nano, h.Checked)
+					if checkedErr != nil || h.Code != "sample_passed" || h.Bytes <= 0 || h.Bytes > 2*1024*1024 || (h.HTTP != 200 && h.HTTP != 206) || !hashPattern.MatchString(h.SHA256) || !researchHost(h.FinalHost) {
+						continue
+					}
+				}
+				m.health[id] = h
+			}
+		}
 	}
 	var jobs []*ResearchJob
 	if b, e := os.ReadFile(filepath.Join(a.dir, "research-jobs.json")); e == nil {
